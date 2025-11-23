@@ -170,6 +170,20 @@ html {
   }
 }
 
+/* Ensure anchored sections account for fixed navbar height */
+section[id] {
+  scroll-margin-top: 88px;
+}
+
+/* Font utilities */
+.font-sans {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+.font-display {
+  font-family: var(--font-display), "Fraunces", serif;
+  font-variation-settings: "opsz" 48;
+}
+
 /* HeroCards background shadow */
 .shadow {
   position: absolute;
@@ -178,7 +192,7 @@ html {
   rotate: 35deg;
   z-index: -1;
   width: 260px;
-  top: 200px;
+  top: 120px; /* moved further down */
   height: 400px;
   filter: blur(150px);
   will-change: transform;
@@ -198,7 +212,7 @@ html {
 
 @media (max-width: 1024px) {
   .shadow {
-    top: 70px;
+    top: 120px; /* adjust mobile/tablet downward proportionally */
   }
 
   @keyframes shadow-slide {
@@ -215,7 +229,7 @@ html {
 
 @media (max-width: 768px) {
   .shadow {
-    top: 70px;
+    top: 120px; /* keep consistent relative offset on small screens */
     width: 100px;
     height: 350px;
     filter: blur(60px);

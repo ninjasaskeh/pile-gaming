@@ -27,6 +27,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { CONTACT_CONTENT } from "@/constants";
+import type { ContactContent } from "@/lib/content";
+import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 
 const formSchema = z.object({
   firstName: z.string().min(2).max(255),
@@ -36,14 +39,18 @@ const formSchema = z.object({
   message: z.string(),
 });
 
-export const ContactSection = () => {
+export const ContactSection = ({ data }: { data?: ContactContent | null }) => {
+  useSectionRevealPreset("contact", "fadeUp");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
-      subject: "Sample Request",
+      subject:
+        (data?.subjectOptions || CONTACT_CONTENT.subjectOptions || [""])[0] ??
+        "",
       message: "",
     },
   });
@@ -52,9 +59,9 @@ export const ContactSection = () => {
     const { firstName, lastName, email, subject, message } = values;
     console.log(values);
 
-    const mailToLink = `mailto:putrapile.info@gmail.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(
+    const mailToLink = `${
+      data?.emailHref || CONTACT_CONTENT.emailHref
+    }?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
       `Hello, I'm ${firstName} ${lastName}. Email: ${email}.\n\n${message}`
     )}`;
 
@@ -64,17 +71,18 @@ export const ContactSection = () => {
   return (
     <section id="contact" className="container py-24 sm:py-32">
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
+        <div className="gsap-reveal">
           <div className="mb-4">
             <h2 className="text-lg text-primary mb-2 tracking-wider">
-              Contact
+              {data?.kicker || CONTACT_CONTENT.kicker}
             </h2>
 
-            <h2 className="text-3xl md:text-4xl font-bold">Get in Touch</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">
+              {data?.title || CONTACT_CONTENT.title}
+            </h2>
           </div>
           <p className="mb-8 text-muted-foreground lg:w-5/6">
-            For quotes, sample requests, or technical information, contact us
-            via this form or the details below.
+            {data?.description || CONTACT_CONTENT.description}
           </p>
 
           <div className="flex flex-col gap-4">
@@ -83,10 +91,7 @@ export const ContactSection = () => {
                 <Building2 />
                 <div className="font-bold">Address</div>
               </div>
-              <div>
-                BIIE Blok C5-1, Sukadami, Cikarang Selatan, Bekasi, Jawa Barat
-                17550
-              </div>
+              <div>{data?.address || CONTACT_CONTENT.address}</div>
             </div>
 
             <div>
@@ -94,7 +99,12 @@ export const ContactSection = () => {
                 <Phone />
                 <div className="font-bold">Phone</div>
               </div>
-              <div>(021) 8972255 (Hunting)</div>
+              <a
+                href={data?.phoneHref || CONTACT_CONTENT.phoneHref}
+                className="hover:underline"
+              >
+                {data?.phone || CONTACT_CONTENT.phone}
+              </a>
             </div>
 
             <div>
@@ -102,7 +112,12 @@ export const ContactSection = () => {
                 <Mail />
                 <div className="font-bold">Email</div>
               </div>
-              <div>putrapile.info@gmail.com</div>
+              <a
+                href={data?.emailHref || CONTACT_CONTENT.emailHref}
+                className="hover:underline"
+              >
+                {data?.email || CONTACT_CONTENT.email}
+              </a>
             </div>
 
             <div>
@@ -112,20 +127,26 @@ export const ContactSection = () => {
               </div>
 
               <div>
-                <div>Monday - Friday</div>
-                <div>08:00 - 16:00 WIB</div>
+                <div>
+                  {data?.businessHours?.days ||
+                    CONTACT_CONTENT.businessHours.days}
+                </div>
+                <div>
+                  {data?.businessHours?.hours ||
+                    CONTACT_CONTENT.businessHours.hours}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <Card className="bg-muted/60 dark:bg-card">
+        <Card className="bg-muted/60 dark:bg-card gsap-reveal">
           <CardHeader className="text-primary text-2xl"> </CardHeader>
           <CardContent>
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="grid w-full gap-4"
+                className="grid w-full gap-4 gsap-reveal"
               >
                 <div className="flex flex-col md:!flex-row gap-8">
                   <FormField
@@ -135,7 +156,13 @@ export const ContactSection = () => {
                       <FormItem className="w-full">
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Leopoldo" {...field} />
+                          <Input
+                            placeholder={
+                              data?.formPlaceholders?.firstName ||
+                              CONTACT_CONTENT.formPlaceholders.firstName
+                            }
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -148,7 +175,13 @@ export const ContactSection = () => {
                       <FormItem className="w-full">
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Miranda" {...field} />
+                          <Input
+                            placeholder={
+                              data?.formPlaceholders?.lastName ||
+                              CONTACT_CONTENT.formPlaceholders.lastName
+                            }
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -166,7 +199,7 @@ export const ContactSection = () => {
                         <FormControl>
                           <Input
                             type="email"
-                            placeholder="leomirandadev@gmail.com"
+                            placeholder={CONTACT_CONTENT.formPlaceholders.email}
                             {...field}
                           />
                         </FormControl>
@@ -193,19 +226,15 @@ export const ContactSection = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="Sample Request">
-                              Sample Request
-                            </SelectItem>
-                            <SelectItem value="Quotation">Quotation</SelectItem>
-                            <SelectItem value="Technical Specifications">
-                              Technical Specifications
-                            </SelectItem>
-                            <SelectItem value="Production & Delivery Time">
-                              Production & Delivery Time
-                            </SelectItem>
-                            <SelectItem value="OEM/ODM Partnership">
-                              OEM/ODM Partnership
-                            </SelectItem>
+                            {(
+                              data?.subjectOptions ||
+                              CONTACT_CONTENT.subjectOptions ||
+                              []
+                            ).map((subject) => (
+                              <SelectItem key={subject} value={subject}>
+                                {subject}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -224,7 +253,10 @@ export const ContactSection = () => {
                         <FormControl>
                           <Textarea
                             rows={5}
-                            placeholder="Tell us about your needs or questions..."
+                            placeholder={
+                              data?.formPlaceholders?.message ||
+                              CONTACT_CONTENT.formPlaceholders.message
+                            }
                             className="resize-none"
                             {...field}
                           />

@@ -1,5 +1,6 @@
 import DiscordIcon from "@/components/icons/discord-icon";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -33,9 +34,13 @@ export const CommunitySection = () => {
 
             <CardFooter>
               <Button asChild>
-                <a href="https://discord.com/" target="_blank">
+                <Link
+                  href="https://discord.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Join Discord
-                </a>
+                </Link>
               </Button>
             </CardFooter>
           </Card>

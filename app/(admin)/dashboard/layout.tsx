@@ -7,34 +7,24 @@ import { redirect } from "next/navigation";
 import { SessionProvider } from "@/components/auth/session-provider";
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
-    const session = await auth();
-    if (!session) {
-        redirect("/login");
-    }
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
 
-    return (
-        <SessionProvider>
-            <SidebarProvider
-                style={
-                    {
-                        "--sidebar-width": "calc(var(--spacing) * 72)",
-                        "--header-height": "calc(var(--spacing) * 12)",
-                    } as React.CSSProperties
-                }
-            >
-                <AppSidebar variant="inset" />
-                <SidebarInset>
-                    <SiteHeader />
-                    <div className="flex flex-1 flex-col">
-                        <div className="@container/main flex flex-1 flex-col gap-2">
-                            <div className="flex flex-col gap-4 px-4 py-4 md:gap-6 md:py-6 lg:px-6">
-                                {children}
-                            </div>
-                        </div>
-                    </div>
-                </SidebarInset>
-            </SidebarProvider>
-        </SessionProvider>
-    );
+  return (
+    <SessionProvider>
+      <SidebarProvider className="relative flex min-h-screen bg-background">
+        <AppSidebar className="border-r bg-card" />
+        <SidebarInset className="flex flex-1 flex-col">
+          <SiteHeader className="sticky top-0 z-10 border-b bg-background/90 backdrop-blur" />
+          <div className="flex flex-1 flex-col overflow-auto px-4 py-6 lg:px-8">
+            <div className="mx-auto w-full max-w-5xl space-y-6">{children}</div>
+          </div>
+        </SidebarInset>
+      </SidebarProvider>
+    </SessionProvider>
+  );
 };
+
 export default AdminLayout;

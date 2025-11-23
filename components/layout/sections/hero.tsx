@@ -4,10 +4,21 @@ import { HeroCards } from "../HeroCards";
 import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type {
+  HeroContent as HeroContentType,
+  HeroCardsContent,
+} from "@/lib/content";
+import { HERO_FALLBACK_CONTENT } from "@/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const HeroSection = () => {
+export const HeroSection = ({
+  data,
+  cards,
+}: {
+  data?: HeroContentType | null;
+  cards?: HeroCardsContent | null;
+}) => {
   useEffect(() => {
     const items = gsap.utils.toArray<HTMLElement>("#hero .gsap-reveal");
     if (!items.length) return;
@@ -28,54 +39,61 @@ export const HeroSection = () => {
     });
   }, []);
 
+  const heroData = data || null;
+
   return (
     <section
       id="hero"
       className="container grid gap-10 py-20 lg:grid-cols-2 place-items-center md:py-32"
     >
       <div className="space-y-6 text-center lg:text-start">
-        <main className="text-5xl font-bold md:text-6xl gsap-reveal">
+        <main className="text-5xl font-bold md:text-6xl gsap-reveal font-display">
           <h1 className="inline">
             <span className="inline text-transparent bg-clip-text bg-gradient-to-b from-primary/60 to-primary">
-              PT. Putra Pile Indah
+              {heroData?.title || HERO_FALLBACK_CONTENT.title}
             </span>
           </h1>
           <h2 className="block mt-2">
-            Acrylic Imitation Fur Fabrics Manufacturer
+            {heroData?.subtitle || HERO_FALLBACK_CONTENT.subtitle}
           </h2>
         </main>
 
         <p className="mx-auto text-xl text-muted-foreground md:w-10/12 lg:mx-0 gsap-reveal">
-          The leading manufacturer since 1991. Products: Hi Pile, Boa &
-          Polyester. Located in Cikarang Selatan, Bekasi, Indonesia.
+          {heroData?.description || HERO_FALLBACK_CONTENT.description}
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4 gsap-reveal">
           <a
-            href="#contact"
+            href={
+              heroData?.primaryCtaHref || HERO_FALLBACK_CONTENT.primaryCtaHref
+            }
             className={`w-full md:w-1/3 ${buttonVariants({})}`}
           >
-            Contact Us
+            {heroData?.primaryCtaText || HERO_FALLBACK_CONTENT.primaryCtaText}
           </a>
 
           <a
             rel="noreferrer noopener"
-            href="#services"
+            href={
+              heroData?.secondaryCtaHref ||
+              HERO_FALLBACK_CONTENT.secondaryCtaHref
+            }
             className={`w-full md:w-1/3 ${buttonVariants({
               variant: "outline",
             })}`}
           >
-            View Products
+            {heroData?.secondaryCtaText ||
+              HERO_FALLBACK_CONTENT.secondaryCtaText}
           </a>
         </div>
       </div>
 
       {/* Hero cards sections */}
       <div className="z-10 gsap-reveal">
-        <HeroCards />
+        <HeroCards data={cards} />
       </div>
 
-      {/* Shadow effect */}
+      {/* Shadow effect (moved further down) */}
       <div className="shadow" />
     </section>
   );

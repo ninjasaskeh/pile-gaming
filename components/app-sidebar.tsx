@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
@@ -13,17 +13,15 @@ import {
   FolderIcon,
   HelpCircleIcon,
   LayoutDashboardIcon,
-  ListIcon,
   SearchIcon,
   SettingsIcon,
   UsersIcon,
-} from "lucide-react"
-import Link from "next/link"
+} from "lucide-react";
+import Link from "next/link";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -32,40 +30,70 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { useSession } from "next-auth/react"
+} from "@/components/ui/sidebar";
+import { useSession } from "next-auth/react";
 
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: "Hero",
+      url: "/dashboard/hero",
+      icon: ArrowUpCircleIcon,
+    },
+    {
+      title: "Hero Cards",
+      url: "/dashboard/hero-cards",
       icon: LayoutDashboardIcon,
     },
     {
-      title: "Profile",
-      url: "/dashboard/profile",
-      icon: UsersIcon,
+      title: "Capabilities",
+      url: "/dashboard/capabilities",
+      icon: CameraIcon,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: ListIcon,
+      title: "Benefits",
+      url: "/dashboard/benefits",
+      icon: ClipboardListIcon,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: BarChartIcon,
-    },
-    {
-      title: "Projects",
-      url: "#",
+      title: "Products",
+      url: "/dashboard/products",
       icon: FolderIcon,
     },
     {
-      title: "Team",
-      url: "#",
+      title: "Product Overview",
+      url: "/dashboard/product-overview",
+      icon: FileCodeIcon,
+    },
+    {
+      title: "Markets",
+      url: "/dashboard/markets",
+      icon: BarChartIcon,
+    },
+    {
+      title: "Customers",
+      url: "/dashboard/customers",
       icon: UsersIcon,
+    },
+    {
+      title: "Contact",
+      url: "/dashboard/contact",
+      icon: FileTextIcon,
+    },
+    {
+      title: "FAQ",
+      url: "/dashboard/faq",
+      icon: HelpCircleIcon,
+    },
+    {
+      title: "Footer",
+      url: "/dashboard/footer",
+      icon: FileIcon,
+    },
+    {
+      title: "Site Metadata",
+      url: "/dashboard/site-metadata",
+      icon: DatabaseIcon,
     },
   ],
   navSecondary: [
@@ -75,42 +103,20 @@ const data = {
       icon: SettingsIcon,
     },
     {
-      title: "Get Help",
-      url: "#",
-      icon: HelpCircleIcon,
-    },
-    {
       title: "Search",
       url: "#",
       icon: SearchIcon,
     },
   ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: DatabaseIcon,
-    },
-    {
-      name: "Reports",
-      url: "#",
-      icon: ClipboardListIcon,
-    },
-    {
-      name: "Word Assistant",
-      url: "#",
-      icon: FileIcon,
-    },
-  ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const user = {
     name: session?.user?.name ?? "Admin",
     email: session?.user?.email ?? "",
     avatar: session?.user?.image ?? null,
-  }
+  };
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -131,12 +137,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

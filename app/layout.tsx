@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// Local variable fonts
+import { plusJakarta, fraunces } from "./fonts";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ClientOnly } from "@/components/ui/client-only";
@@ -8,13 +9,12 @@ import "./globals.css";
 
 // Removed Navbar import because navbar is handled in route group layout
 import { ThemeProvider } from "@/components/layout/theme-provider";
-const inter = Inter({ subsets: ["latin"] });
+import { SITE_METADATA_CONTENT } from "@/constants";
 
 export const metadata: Metadata = {
-  title: "PT. Putra Pile Indah",
-  description:
-    "Manufacturer of acrylic imitation fur fabrics (Hi Pile, Boa, Polyester) since 1991 in South Cikarang.",
-  metadataBase: new URL("https://putrapile.com"),
+  title: SITE_METADATA_CONTENT.title,
+  description: SITE_METADATA_CONTENT.description,
+  metadataBase: new URL(SITE_METADATA_CONTENT.url),
 };
 
 export default function RootLayout({
@@ -23,8 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background", inter.className)}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={cn(plusJakarta.variable, fraunces.variable)}
+    >
+      <body className={cn("min-h-screen bg-background font-sans")}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

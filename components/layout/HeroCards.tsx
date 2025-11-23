@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -14,8 +15,10 @@ import { gsap } from "gsap";
 import { LightBulbIcon, PlaneIcon } from "../icons/Icons";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { HERO_CARDS_CONTENT } from "@/constants";
+import type { HeroCardsContent } from "@/lib/content";
 
-export const HeroCards = () => {
+export const HeroCards = ({ data }: { data?: HeroCardsContent | null }) => {
   // Refs for cards
   const refTestimonial = useRef<HTMLDivElement | null>(null);
   const refCompany = useRef<HTMLDivElement | null>(null);
@@ -90,6 +93,50 @@ export const HeroCards = () => {
     return () => ctx.revert();
   }, []);
 
+  const fallback = HERO_CARDS_CONTENT;
+  const merged = {
+    testimonial: data?.testimonial ?? fallback.testimonial,
+    company: data?.company ?? fallback.company,
+    capacity: data?.capacity ?? fallback.capacity,
+    productLines: data?.productLines ?? fallback.productLines,
+  };
+  const testimonial = {
+    title: merged.testimonial?.title ?? fallback.testimonial.title,
+    subtitle: merged.testimonial?.subtitle ?? fallback.testimonial.subtitle,
+    quote: merged.testimonial?.quote ?? fallback.testimonial.quote,
+  };
+  const company = {
+    title: merged.company?.title ?? fallback.company.title,
+    subtitle: merged.company?.subtitle ?? fallback.company.subtitle,
+    description: merged.company?.description ?? fallback.company.description,
+    logoSrc: merged.company?.logoSrc ?? fallback.company.logoSrc,
+    primaryCta: {
+      label:
+        merged.company?.primaryCta?.label ?? fallback.company.primaryCta.label,
+      href:
+        merged.company?.primaryCta?.href ?? fallback.company.primaryCta.href,
+    },
+    secondaryCta: {
+      label:
+        merged.company?.secondaryCta?.label ??
+        fallback.company.secondaryCta.label,
+      href:
+        merged.company?.secondaryCta?.href ??
+        fallback.company.secondaryCta.href,
+    },
+  };
+  const capacity = {
+    title: merged.capacity?.title ?? fallback.capacity.title,
+    subtitle: merged.capacity?.subtitle ?? fallback.capacity.subtitle,
+    metrics: merged.capacity?.metrics ?? fallback.capacity.metrics,
+  };
+  const productLines = {
+    title: merged.productLines?.title ?? fallback.productLines.title,
+    description:
+      merged.productLines?.description ?? fallback.productLines.description,
+    badges: merged.productLines?.badges ?? fallback.productLines.badges,
+  };
+
   return (
     <div
       className="hidden lg:flex flex-row flex-wrap gap-8 relative w-[700px] h-[500px]"
@@ -106,15 +153,12 @@ export const HeroCards = () => {
           </div>
 
           <div className="flex flex-col">
-            <CardTitle className="text-lg">Quality & Reliability</CardTitle>
-            <CardDescription>Manufacturing Partner</CardDescription>
+            <CardTitle className="text-lg">{testimonial.title}</CardTitle>
+            <CardDescription>{testimonial.subtitle}</CardDescription>
           </div>
         </CardHeader>
 
-        <CardContent>
-          “Consistent acrylic imitation fur fabrics, batch after batch. Great
-          communication and on-time delivery.”
-        </CardContent>
+        <CardContent>“{testimonial.quote}”</CardContent>
       </Card>
 
       {/* Company overview with logo */}
@@ -125,30 +169,33 @@ export const HeroCards = () => {
         <CardHeader className="flex items-center justify-center pb-2 mt-8">
           <div className="absolute flex items-center justify-center rounded-full -top-12 w-22 h-22 bg-secondary">
             <Image
-              src="/pile-logo.png"
-              alt="PT. Putra Pile Indah logo"
+              src={company.logoSrc}
+              alt={`${company.title} logo`}
               width={80}
               height={80}
               className="object-contain h-20 w-20"
             />
           </div>
-          <CardTitle className="text-center">PT. Putra Pile Indah</CardTitle>
+          <CardTitle className="text-center">{company.title}</CardTitle>
           <CardDescription className="font-normal text-primary">
-            Established 1991 · Cikarang, Indonesia
+            {company.subtitle}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="pb-2 text-sm text-center">
-          High-quality acrylic imitation fur fabrics for plush toys, garments,
-          home textiles, and paint rollers.
+          {company.description}
         </CardContent>
 
         <CardFooter className="gap-2">
           <Button size="sm" asChild>
-            <a href="#services">View Products</a>
+            <Link href={company.primaryCta.href}>
+              {company.primaryCta.label}
+            </Link>
           </Button>
           <Button size="sm" variant="outline" asChild>
-            <a href="#contact">Contact</a>
+            <Link href={company.secondaryCta.href}>
+              {company.secondaryCta.label}
+            </Link>
           </Button>
         </CardFooter>
       </Card>
@@ -160,27 +207,21 @@ export const HeroCards = () => {
       >
         <CardHeader>
           <CardTitle className="flex items-center justify-between gap-2">
-            Production Capacity
+            {capacity.title}
             <span className="relative flex size-3">
               <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-primary"></span>
               <span className="relative inline-flex rounded-full size-3 bg-primary"></span>
             </span>
           </CardTitle>
-          <CardDescription>
-            Scalable output with quality-focused operations.
-          </CardDescription>
+          <CardDescription>{capacity.subtitle}</CardDescription>
         </CardHeader>
 
         <CardContent>
           <div className="space-y-3 text-sm">
-            {[
-              "500,000 yards/month",
-              "266 machines in operation",
-              "500+ skilled workers",
-            ].map((benefit) => (
-              <span key={benefit} className="flex items-start">
+            {(capacity.metrics ?? []).map((metric) => (
+              <span key={metric} className="flex items-start">
                 <Check className="mt-0.5 text-green-500" size={18} />
-                <span className="ml-2">{benefit}</span>
+                <span className="ml-2">{metric}</span>
               </span>
             ))}
           </div>
@@ -197,18 +238,14 @@ export const HeroCards = () => {
             <LightBulbIcon />
           </div>
           <div>
-            <CardTitle>Product Lines</CardTitle>
+            <CardTitle>{productLines.title}</CardTitle>
             <CardDescription className="mt-2 text-md">
-              Acrylic imitation fur fabrics in multiple constructions.
+              {productLines.description}
             </CardDescription>
             <div className="flex flex-wrap gap-2 mt-3">
-              {[
-                { name: "Hi Pile" },
-                { name: "Boa" },
-                { name: "Polyester" },
-              ].map((i) => (
-                <Badge key={i.name} variant="secondary" className="text-xs">
-                  {i.name}
+              {(productLines.badges ?? []).map((name) => (
+                <Badge key={name} variant="secondary" className="text-xs">
+                  {name}
                 </Badge>
               ))}
             </div>

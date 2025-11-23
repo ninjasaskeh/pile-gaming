@@ -1,6 +1,6 @@
 import React from "react";
 
-// Group layout: defer to root layout for shared UI (Navbar, ThemeProvider)
+// Simplified layout: pages decide if they render Navbar.
 const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
