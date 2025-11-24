@@ -41,7 +41,7 @@ Built with Next.js (App Router), Tailwind CSS, and shadcn/ui.
 - Features: sidebar navigation, inputs, and drag & drop uploads
 - Components: small, reusable pieces under `app/(admin)/dashboard/_components`
 
-## Getting Started
+## Getting Started (Local)
 
 1. Install dependencies
 
@@ -72,5 +72,100 @@ npm run dev
 
 ## Notes
 
-- The root layout (`app/layout.tsx`) provides ThemeProvider and Navbar. The group layout `app/(root)/layout.tsx` defers to the root layout.
+- Navbar now renders directly in `app/(root)/page.tsx` (home). Group layout `app/(root)/layout.tsx` is intentionally minimal.
 - Hero, Products Overview, Markets, and Customers headers can be edited in the Admin Dashboard. Public pages gracefully fall back to defaults if CMS is empty.
+
+## Docker
+
+Run the app in a container with a multi-stage build.
+
+### Build Image
+
+```bash
+docker build -t pile-app .
+```
+
+### Run Container
+
+Set environment variables (at least `DATABASE_URL`). Optional: `ADMIN_TOKEN`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`.
+
+```bash
+docker run -e DATABASE_URL="postgresql://user:pass@host:5432/db" \
+  -e ADMIN_TOKEN="your-secret" \
+  -e NEXTAUTH_SECRET="replace-with-secret" \
+  -p 3000:3000 pile-app
+```
+
+Visit http://localhost:3000
+
+### Persist Uploads
+
+Mount `public/uploads` for persistence:
+
+```bash
+docker run -e DATABASE_URL=... -p 3000:3000 \
+  -v $(pwd)/public/uploads:/app/public/uploads pile-app
+```
+
+### Common Env Vars
+
+| Variable          | Purpose                                   |
+| ----------------- | ----------------------------------------- |
+| `DATABASE_URL`    | Prisma database connection string         |
+| `ADMIN_TOKEN`     | Token for protected CMS writes            |
+| `NEXTAUTH_SECRET` | NextAuth secret key (production required) |
+| `NEXTAUTH_URL`    | Base URL for NextAuth callbacks           |
+
+### Migrations on Start
+
+Container runs `npx prisma migrate deploy && npm run start` so ensure migrations are committed and DB reachable.
+
+### Rebuild After Dependency Changes
+
+```bash
+docker build --no-cache -t pile-app .
+```
+
+### Development vs Docker
+
+Use local `npm run dev` for rapid iteration; Docker is best for production parity.
+
+## Docker Compose (App + Postgres)
+
+For a local stack with Postgres:
+
+1. Copy `.env.example` to `.env` (optional override values).
+2. Start services:
+
+```bash
+docker compose up -d --build
+```
+
+3. Apply initial migrations (first run only):
+
+```bash
+docker compose exec app npx prisma migrate dev --name init
+```
+
+4. (Optional) Seed data:
+
+```bash
+docker compose exec app npm run db:seed
+```
+
+5. Stop services:
+
+```bash
+docker compose down
+```
+
+Volumes:
+
+- `db-data`: Postgres data persistence
+- `uploads`: Persistent `public/uploads` directory
+
+Rebuild after changes to dependencies or Dockerfile:
+
+```bash
+docker compose build --no-cache app
+```

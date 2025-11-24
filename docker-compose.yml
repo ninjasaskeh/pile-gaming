@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pile
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/pile?schema=public"
+      NEXTAUTH_SECRET: "replace-with-strong-secret"
+      NEXTAUTH_URL: "http://localhost:3000"
+      ADMIN_TOKEN: "your-admin-token"
+    ports:
+      - "3000:3000"
+    volumes:
+      - uploads:/app/public/uploads
+    restart: unless-stopped
+
+volumes:
+  db-data:
+  uploads:
