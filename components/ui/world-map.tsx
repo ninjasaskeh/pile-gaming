@@ -92,16 +92,14 @@ export default function WorldMap({
                 fill="none"
                 stroke="url(#path-gradient)"
                 strokeWidth="1"
-                initial={{
-                  pathLength: 0,
-                }}
-                animate={{
-                  pathLength: 1,
-                }}
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
                 transition={{
-                  duration: 1,
-                  delay: 0.5 * i,
-                  ease: "easeOut",
+                  duration: 2.2,
+                  delay: 0.4 * i,
+                  ease: "easeInOut",
+                  repeat: Infinity,
+                  repeatType: "reverse",
                 }}
                 key={`start-upper-${i}`}
               ></motion.path>

@@ -68,7 +68,7 @@ export const Navbar = () => {
     const id = href.slice(1);
     const el = document.getElementById(id);
     if (el) {
-      const navOffset = 76; // fixed navbar height + margin
+      const navOffset = 96; // fixed navbar height + margin (slightly taller navbar)
       const top = el.getBoundingClientRect().top + window.scrollY - navOffset;
       window.scrollTo({ top, behavior: "smooth" });
       setActive(href);
@@ -78,8 +78,8 @@ export const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
       <div
         className={cn(
-          "pointer-events-auto group w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl mt-2",
-          "overflow-hidden rounded-2xl flex justify-between items-center p-2",
+          "pointer-events-auto group w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl mt-3",
+          "overflow-hidden rounded-3xl flex justify-between items-center px-4 py-3",
           "border border-white/10 dark:border-white/10",
           "supports-[backdrop-filter]:bg-background/30 backdrop-blur-xl backdrop-saturate-150",
           "shadow-lg shadow-black/5 transition-all duration-300",
@@ -98,8 +98,8 @@ export const Navbar = () => {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px -z-10 bg-white/30 dark:bg-white/20"
         />
-        <Link href="/" className="font-bold text-lg flex items-center">
-          <Globe className="w-8 h-8 mr-2 text-primary" />
+        <Link href="/" className="font-bold text-xl flex items-center gap-2">
+          <Globe className="w-9 h-9 text-primary" />
           {COMPANY_INFO.displayName}
         </Link>
         {/* <!-- Mobile --> */}
@@ -120,7 +120,7 @@ export const Navbar = () => {
                 <SheetHeader className="mb-4 ml-4">
                   <SheetTitle className="flex items-center">
                     <Link href="/" className="flex items-center">
-                      <Globe className="w-8 h-8 mr-2 text-primary" />
+                      <Globe className="w-9 h-9 mr-2 text-primary" />
                       Putra Pile Indah
                     </Link>
                   </SheetTitle>
@@ -140,7 +140,7 @@ export const Navbar = () => {
                         setIsOpen(false);
                       }}
                       variant="ghost"
-                      className="justify-start text-base"
+                      className="justify-start text-lg py-2"
                     >
                       {label}
                     </Button>
@@ -169,7 +169,7 @@ export const Navbar = () => {
                       href={href}
                       onClick={scrollTo(href)}
                       className={cn(
-                        "relative text-base px-3 py-1 transition-colors",
+                        "relative text-lg px-4 py-2 transition-colors",
                         isActive
                           ? "text-primary"
                           : "text-foreground/80 hover:text-foreground"
@@ -178,7 +178,7 @@ export const Navbar = () => {
                       {label}
                       <span
                         className={cn(
-                          "absolute left-2 right-2 -bottom-1 h-[2px] rounded bg-primary/80 transition-opacity",
+                          "absolute left-3 right-3 -bottom-1.5 h-[3px] rounded-full bg-primary/80 transition-opacity",
                           isActive ? "opacity-100" : "opacity-0"
                         )}
                       />

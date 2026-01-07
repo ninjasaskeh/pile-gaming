@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PRODUCT_OVERVIEW_CONTENT } from "@/constants";
 import type { ProductOverviewContent } from "@/lib/content";
 import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 import {
@@ -28,12 +27,12 @@ export const ProductOverviewSection = ({
 }) => {
   useSectionRevealPreset("product-overview", "fadeUp");
   const content = data || {};
-  const header = content.header || PRODUCT_OVERVIEW_CONTENT.header;
-  const items = content.items || PRODUCT_OVERVIEW_CONTENT.items;
+  const header = content.header || undefined;
+  const items = content.items || [];
 
   return (
     <section id="product-overview" className="container py-24 sm:py-32">
-      <SectionHeader data={header} fallback={PRODUCT_OVERVIEW_CONTENT.header} />
+      <SectionHeader data={header} />
 
       <Carousel
         opts={{

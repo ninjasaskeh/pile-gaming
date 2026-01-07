@@ -15,7 +15,6 @@ import { gsap } from "gsap";
 import { LightBulbIcon, PlaneIcon } from "../icons/Icons";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
-import { HERO_CARDS_CONTENT } from "@/constants";
 import type { HeroCardsContent } from "@/lib/content";
 
 export const HeroCards = ({ data }: { data?: HeroCardsContent | null }) => {
@@ -92,49 +91,34 @@ export const HeroCards = ({ data }: { data?: HeroCardsContent | null }) => {
     });
     return () => ctx.revert();
   }, []);
-
-  const fallback = HERO_CARDS_CONTENT;
-  const merged = {
-    testimonial: data?.testimonial ?? fallback.testimonial,
-    company: data?.company ?? fallback.company,
-    capacity: data?.capacity ?? fallback.capacity,
-    productLines: data?.productLines ?? fallback.productLines,
-  };
   const testimonial = {
-    title: merged.testimonial?.title ?? fallback.testimonial.title,
-    subtitle: merged.testimonial?.subtitle ?? fallback.testimonial.subtitle,
-    quote: merged.testimonial?.quote ?? fallback.testimonial.quote,
+    title: data?.testimonial?.title || "",
+    subtitle: data?.testimonial?.subtitle || "",
+    quote: data?.testimonial?.quote || "",
   };
   const company = {
-    title: merged.company?.title ?? fallback.company.title,
-    subtitle: merged.company?.subtitle ?? fallback.company.subtitle,
-    description: merged.company?.description ?? fallback.company.description,
-    logoSrc: merged.company?.logoSrc ?? fallback.company.logoSrc,
+    title: data?.company?.title || "",
+    subtitle: data?.company?.subtitle || "",
+    description: data?.company?.description || "",
+    logoSrc: data?.company?.logoSrc || "/pile-logo.png",
     primaryCta: {
-      label:
-        merged.company?.primaryCta?.label ?? fallback.company.primaryCta.label,
-      href:
-        merged.company?.primaryCta?.href ?? fallback.company.primaryCta.href,
+      label: data?.company?.primaryCta?.label || "",
+      href: data?.company?.primaryCta?.href || "#",
     },
     secondaryCta: {
-      label:
-        merged.company?.secondaryCta?.label ??
-        fallback.company.secondaryCta.label,
-      href:
-        merged.company?.secondaryCta?.href ??
-        fallback.company.secondaryCta.href,
+      label: data?.company?.secondaryCta?.label || "",
+      href: data?.company?.secondaryCta?.href || "#",
     },
   };
   const capacity = {
-    title: merged.capacity?.title ?? fallback.capacity.title,
-    subtitle: merged.capacity?.subtitle ?? fallback.capacity.subtitle,
-    metrics: merged.capacity?.metrics ?? fallback.capacity.metrics,
+    title: data?.capacity?.title || "",
+    subtitle: data?.capacity?.subtitle || "",
+    metrics: data?.capacity?.metrics || [],
   };
   const productLines = {
-    title: merged.productLines?.title ?? fallback.productLines.title,
-    description:
-      merged.productLines?.description ?? fallback.productLines.description,
-    badges: merged.productLines?.badges ?? fallback.productLines.badges,
+    title: data?.productLines?.title || "",
+    description: data?.productLines?.description || "",
+    badges: data?.productLines?.badges || [],
   };
 
   return (

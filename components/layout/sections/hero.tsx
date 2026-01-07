@@ -8,7 +8,6 @@ import type {
   HeroContent as HeroContentType,
   HeroCardsContent,
 } from "@/lib/content";
-import { HERO_FALLBACK_CONTENT } from "@/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +39,13 @@ export const HeroSection = ({
   }, []);
 
   const heroData = data || null;
+  const title = heroData?.title || "";
+  const subtitle = heroData?.subtitle || "";
+  const description = heroData?.description || "";
+  const primaryCtaHref = heroData?.primaryCtaHref || "#";
+  const primaryCtaText = heroData?.primaryCtaText || "";
+  const secondaryCtaHref = heroData?.secondaryCtaHref || "#";
+  const secondaryCtaText = heroData?.secondaryCtaText || "";
 
   return (
     <section
@@ -50,48 +56,42 @@ export const HeroSection = ({
         <main className="text-5xl font-bold md:text-6xl gsap-reveal font-display">
           <h1 className="inline">
             <span className="inline text-transparent bg-clip-text bg-gradient-to-b from-primary/60 to-primary">
-              {heroData?.title || HERO_FALLBACK_CONTENT.title}
+              {title}
             </span>
           </h1>
-          <h2 className="block mt-2">
-            {heroData?.subtitle || HERO_FALLBACK_CONTENT.subtitle}
-          </h2>
+          <h2 className="block mt-2">{subtitle}</h2>
         </main>
 
         <p className="mx-auto text-xl text-muted-foreground md:w-10/12 lg:mx-0 gsap-reveal">
-          {heroData?.description || HERO_FALLBACK_CONTENT.description}
+          {description}
         </p>
 
         <div className="space-y-4 md:space-y-0 md:space-x-4 gsap-reveal">
           <a
-            href={
-              heroData?.primaryCtaHref || HERO_FALLBACK_CONTENT.primaryCtaHref
-            }
-            className={`w-full md:w-1/3 ${buttonVariants({})}`}
+            href={primaryCtaHref}
+            className={`w-full md:w-1/3 ${buttonVariants(
+              {}
+            )} transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_32px_rgba(249,115,22,0.35)]`}
           >
-            {heroData?.primaryCtaText || HERO_FALLBACK_CONTENT.primaryCtaText}
+            {primaryCtaText}
           </a>
 
           <a
             rel="noreferrer noopener"
-            href={
-              heroData?.secondaryCtaHref ||
-              HERO_FALLBACK_CONTENT.secondaryCtaHref
-            }
+            href={secondaryCtaHref}
             className={`w-full md:w-1/3 ${buttonVariants({
               variant: "outline",
-            })}`}
+            })} transition-transform duration-200 hover:-translate-y-0.5 hover:border-primary/60`}
           >
-            {heroData?.secondaryCtaText ||
-              HERO_FALLBACK_CONTENT.secondaryCtaText}
+            {secondaryCtaText}
           </a>
         </div>
       </div>
 
-      {/* Hero cards sections */}
+      {/* Hero cards sections
       <div className="z-10 gsap-reveal">
         <HeroCards data={cards} />
-      </div>
+      </div> */}
 
       {/* Shadow effect (moved further down) */}
       <div className="shadow" />

@@ -4,15 +4,9 @@ import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
-  CameraIcon,
-  ClipboardListIcon,
-  DatabaseIcon,
   FileCodeIcon,
   FileIcon,
-  FileTextIcon,
-  FolderIcon,
   HelpCircleIcon,
-  LayoutDashboardIcon,
   SearchIcon,
   SettingsIcon,
   UsersIcon,
@@ -36,31 +30,6 @@ import { useSession } from "next-auth/react";
 const data = {
   navMain: [
     {
-      title: "Hero",
-      url: "/dashboard/hero",
-      icon: ArrowUpCircleIcon,
-    },
-    {
-      title: "Hero Cards",
-      url: "/dashboard/hero-cards",
-      icon: LayoutDashboardIcon,
-    },
-    {
-      title: "Capabilities",
-      url: "/dashboard/capabilities",
-      icon: CameraIcon,
-    },
-    {
-      title: "Benefits",
-      url: "/dashboard/benefits",
-      icon: ClipboardListIcon,
-    },
-    {
-      title: "Products",
-      url: "/dashboard/products",
-      icon: FolderIcon,
-    },
-    {
       title: "Product Overview",
       url: "/dashboard/product-overview",
       icon: FileCodeIcon,
@@ -76,11 +45,6 @@ const data = {
       icon: UsersIcon,
     },
     {
-      title: "Contact",
-      url: "/dashboard/contact",
-      icon: FileTextIcon,
-    },
-    {
       title: "FAQ",
       url: "/dashboard/faq",
       icon: HelpCircleIcon,
@@ -89,11 +53,6 @@ const data = {
       title: "Footer",
       url: "/dashboard/footer",
       icon: FileIcon,
-    },
-    {
-      title: "Site Metadata",
-      url: "/dashboard/site-metadata",
-      icon: DatabaseIcon,
     },
   ],
   navSecondary: [
@@ -129,7 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link href="/dashboard">
                 <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">Putra Pile Indah</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -137,7 +96,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

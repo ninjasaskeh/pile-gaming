@@ -43,32 +43,94 @@ Built with Next.js (App Router), Tailwind CSS, and shadcn/ui.
 
 ## Getting Started (Local)
 
-1. Install dependencies
+### 1. Prerequisites
+
+- Node.js 18+ (disarankan LTS)
+- npm (atau pnpm/yarn, contoh di bawah pakai npm)
+- PostgreSQL yang bisa diakses secara lokal **atau** via layanan seperti Neon
+
+> Tip: Untuk development paling mudah pakai Postgres dari `docker-compose` (lihat bagian "Docker Compose" di bawah).
+
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Configure your database
+### 3. Konfigurasi environment
 
-Set `DATABASE_URL` in `.env`. Then generate the Prisma Client and apply migrations:
+Buat file `.env` (atau `.env.local`) di root project dan isi minimal nilai berikut:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/pile?schema=public"
+NEXTAUTH_SECRET="your-strong-secret"
+NEXTAUTH_URL="http://localhost:3000"
+ADMIN_TOKEN="your-admin-token"
+
+# (Opsional, untuk override credential admin default saat seeding)
+ADMIN_EMAIL="admin@putrapile.com"
+ADMIN_PASSWORD="admin123"
+```
+
+- `DATABASE_URL` → ganti sesuai koneksi Postgres kamu (lokal atau Neon).
+- `NEXTAUTH_SECRET` → gunakan string acak yang kuat di production.
+- `NEXTAUTH_URL` → URL base aplikasi (untuk callback NextAuth).
+- `ADMIN_TOKEN` → dipakai untuk proteksi beberapa operasi CMS/Upload.
+- `ADMIN_EMAIL` / `ADMIN_PASSWORD` → kalau tidak di-set, seed akan membuat admin `admin@putrapile.com` / `admin123`.
+
+### 4. Siapkan database
+
+**Opsi A – Postgres lokal via Docker Compose (disarankan untuk dev)**
+
+```bash
+docker compose up -d db
+```
+
+Pastikan `DATABASE_URL` mengarah ke `localhost:5432` seperti contoh di atas.
+
+**Opsi B – Postgres eksternal (Neon, Railway, dsb.)**
+
+- Ambil connection string dari provider.
+- Set ke `DATABASE_URL` di `.env`.
+
+### 5. Prisma: generate & migrate & seed
+
+Generate Prisma Client dan jalankan migrasi schema:
 
 ```bash
 npx prisma generate
-npx prisma migrate dev -n init
+npx prisma migrate dev --name init
 ```
 
-3. (Optional) Protect admin writes
+Lalu seed data awal (admin user + konten demo):
 
-Add `ADMIN_TOKEN=your-secret` to `.env`. Use the same token in the dashboard when saving or uploading images.
+```bash
+npm run db:seed
+```
 
-4. Run the dev server
+Setelah seed sukses, kamu punya akun admin dan konten default untuk semua section.
+
+### 6. Jalankan development server
 
 ```bash
 npm run dev
 ```
 
-5. Open http://localhost:3000
+Buka: http://localhost:3000
+
+### 7. Login & akses dashboard / CMS
+
+- Halaman login admin: `http://localhost:3000/auth/login`
+- Default credential (kalau tidak di-override di `.env`):
+  - Email: `admin@putrapile.com`
+  - Password: `admin123`
+
+Setelah login:
+
+- Dashboard section-based: `http://localhost:3000/dashboard` (redirect ke `/dashboard/hero`).
+- Halaman CMS ringkas (semua section dalam satu layar): `http://localhost:3000/cms`.
+
+Semua perubahan konten disimpan ke database via Prisma; upload gambar akan tersimpan di `public/uploads`.
 
 ## Notes
 

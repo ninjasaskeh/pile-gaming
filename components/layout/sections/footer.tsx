@@ -1,12 +1,11 @@
 "use client";
 
 import { LogoIcon } from "@/components/icons/Icons";
-import { FOOTER_CONTENT } from "@/constants";
 import type { FooterContent } from "@/lib/content";
 import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 
 export const FooterSection = ({ data }: { data?: FooterContent | null }) => {
-  const footer = data || FOOTER_CONTENT;
+  const footer = data || {};
   const {
     brandName,
     address,
@@ -31,23 +30,23 @@ export const FooterSection = ({ data }: { data?: FooterContent | null }) => {
             className="flex items-center gap-2 text-xl font-bold"
           >
             <LogoIcon />
-            {brandName}
+            {brandName || ""}
           </a>
-          <p className="text-sm text-muted-foreground">{address}</p>
+          <p className="text-sm text-muted-foreground">{address || ""}</p>
           <div className="pt-2 space-y-1 text-sm">
             <a
               rel="noreferrer noopener"
               href={emailHref}
               className="block opacity-80 hover:opacity-100"
             >
-              Email: {email}
+              Email: {email || ""}
             </a>
             <a
               rel="noreferrer noopener"
               href={phoneHref}
               className="block opacity-80 hover:opacity-100"
             >
-              Phone: {phone}
+              Phone: {phone || ""}
             </a>
           </div>
         </div>
@@ -67,7 +66,8 @@ export const FooterSection = ({ data }: { data?: FooterContent | null }) => {
 
       <section className="container text-center pb-14">
         <h3 className="gsap-reveal">
-          &copy; {new Date().getFullYear()} {brandName}. All rights reserved.
+          &copy; {new Date().getFullYear()} {brandName || ""}. All rights
+          reserved.
         </h3>
       </section>
     </footer>

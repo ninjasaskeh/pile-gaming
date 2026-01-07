@@ -9,12 +9,14 @@ import "./globals.css";
 
 // Removed Navbar import because navbar is handled in route group layout
 import { ThemeProvider } from "@/components/layout/theme-provider";
-import { SITE_METADATA_CONTENT } from "@/constants";
+
+const appUrl =
+  process.env.NEXT_PUBLIC_APP_URL ??
+  process.env.NEXTAUTH_URL ??
+  "http://localhost:3000";
 
 export const metadata: Metadata = {
-  title: SITE_METADATA_CONTENT.title,
-  description: SITE_METADATA_CONTENT.description,
-  metadataBase: new URL(SITE_METADATA_CONTENT.url),
+  metadataBase: new URL(appUrl),
 };
 
 export default function RootLayout({

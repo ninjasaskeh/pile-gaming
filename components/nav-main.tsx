@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { Separator } from "./ui/separator";
 
 export function NavMain({
   items,
@@ -27,7 +28,7 @@ export function NavMain({
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarMenu>
+        {/* <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
             <SidebarMenuButton
               tooltip="Quick Create"
@@ -45,7 +46,8 @@ export function NavMain({
               <span className="sr-only">Inbox</span>
             </Button>
           </SidebarMenuItem>
-        </SidebarMenu>
+        </SidebarMenu> */}
+        <Separator />
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
@@ -58,10 +60,10 @@ export function NavMain({
               >
                 <Link
                   href={item.url}
-                  className="flex w-full items-center gap-2"
+                  className="flex w-full items-center gap-3 py-2 text-[15px] lg:text-base"
                 >
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
+                  {item.icon && <item.icon className="h-4 w-4 lg:h-5 lg:w-5" />}
+                  <span className="font-medium">{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

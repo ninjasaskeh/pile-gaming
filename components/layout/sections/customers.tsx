@@ -4,7 +4,6 @@ import Image from "next/image";
 import { SectionHeader } from "@/components/layout/SectionHeader";
 import { Marquee } from "@devnomic/marquee";
 import "@devnomic/marquee/dist/index.css";
-import { CUSTOMERS_CONTENT } from "@/constants";
 import type { CustomersContent } from "@/lib/content";
 import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 
@@ -15,12 +14,12 @@ export const CustomersSection = ({
 }) => {
   useSectionRevealPreset("sponsors", "fadeUp");
   const content = data || {};
-  const header = content.header || CUSTOMERS_CONTENT.header;
-  const logos = content.logos || CUSTOMERS_CONTENT.logos;
+  const header = content.header || undefined;
+  const logos = content.logos || [];
 
   return (
     <section id="sponsors" className="max-w-[90%] mx-auto pb-24 sm:pb-32">
-      <SectionHeader data={header} fallback={CUSTOMERS_CONTENT.header} />
+      <SectionHeader data={header} />
 
       <Marquee
         className="gap-[4rem] gsap-reveal"
@@ -28,10 +27,10 @@ export const CustomersSection = ({
         innerClassName="gap-[4rem]"
         pauseOnHover
       >
-        {logos?.map(({ src, alt }) => (
+        {logos?.map(({ src, alt }, index) => (
           <div
-            key={src}
-            className="flex items-center justify-center px-2 py-2 gsap-reveal"
+            key={`${src || "fallback"}::${alt || "logo"}::${index}`}
+            className="flex shrink-0 items-center justify-center px-2 py-2 gsap-reveal"
           >
             <Image
               src={encodeURI(src || "/favicon.ico")}

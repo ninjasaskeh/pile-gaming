@@ -13,14 +13,14 @@ export function SectionHeader({
   align = "center",
   data: dataProp,
 }: {
-  fallback: Required<Pick<SectionHeaderType, "kicker" | "title" | "subtitle">>;
+  fallback?: Partial<Pick<SectionHeaderType, "kicker" | "title" | "subtitle">>;
   align?: "left" | "center";
   data?: SectionHeaderType | null;
 }) {
-  const source = dataProp || null;
-  const kicker = source?.kicker || fallback.kicker;
-  const title = source?.title || fallback.title;
-  const subtitle = source?.subtitle || fallback.subtitle;
+  const source = dataProp || fallback || null;
+  const kicker = source?.kicker || "";
+  const title = source?.title || "";
+  const subtitle = source?.subtitle || "";
   const textCenter = align === "center" ? "text-center" : "text-left";
 
   return (

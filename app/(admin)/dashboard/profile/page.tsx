@@ -1,12 +1,11 @@
 import { auth } from "@/auth";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@/components/ui/table";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,48 +22,40 @@ export default async function Page() {
 
   return (
     <div className="grid gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Admin Profile</CardTitle>
-          <CardDescription>
-            Informasi akun admin yang sedang login.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-2 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="w-24 text-muted-foreground">Nama</span>
-              <Separator orientation="vertical" className="h-4" />
-              <span>{user?.name ?? "-"}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-24 text-muted-foreground">Email</span>
-              <Separator orientation="vertical" className="h-4" />
-              <span>{user?.email ?? "-"}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-24 text-muted-foreground">Role</span>
-              <Separator orientation="vertical" className="h-4" />
-              <span>{user?.role ?? "-"}</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid gap-1">
+        <h1 className="text-2xl font-semibold tracking-tight">Admin Profile</h1>
+        <p className="text-sm text-muted-foreground">
+          Informasi akun admin yang sedang login.
+        </p>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Pengaturan</CardTitle>
-          <CardDescription>
-            Form pengaturan singkat (placeholder).
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Di sini Anda dapat menambahkan form untuk mengubah nama, avatar,
-            atau password.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="overflow-hidden rounded-lg border">
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell className="w-40 text-muted-foreground">Nama</TableCell>
+              <TableCell className="w-6">
+                <Separator orientation="vertical" className="h-4" />
+              </TableCell>
+              <TableCell>{user?.name ?? "-"}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="w-40 text-muted-foreground">Email</TableCell>
+              <TableCell className="w-6">
+                <Separator orientation="vertical" className="h-4" />
+              </TableCell>
+              <TableCell>{user?.email ?? "-"}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className="w-40 text-muted-foreground">Role</TableCell>
+              <TableCell className="w-6">
+                <Separator orientation="vertical" className="h-4" />
+              </TableCell>
+              <TableCell>{user?.role ?? "-"}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

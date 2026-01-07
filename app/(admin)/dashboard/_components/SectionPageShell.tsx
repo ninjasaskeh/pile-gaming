@@ -11,6 +11,9 @@ export type SectionPageShellProps<K extends keyof SiteContent> = {
   description?: string;
   manager: SectionContentManager<K>;
   children: React.ReactNode;
+
+  /** Optional: hide the shell-level save button if child provides its own. */
+  hideSave?: boolean;
 };
 
 export function SectionPageShell<K extends keyof SiteContent>({
@@ -18,19 +21,30 @@ export function SectionPageShell<K extends keyof SiteContent>({
   description,
   manager,
   children,
+  hideSave,
 }: SectionPageShellProps<K>) {
-  const { error, successMessage, loading, refresh } = manager;
+  const { error, successMessage, loading, refresh, save, saving } = manager;
 
   return (
     <div className="grid gap-6">
-      <header className="grid gap-1">
-        <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
-        {description ? (
-          <p className="text-sm text-muted-foreground">{description}</p>
+      <header className="flex items-start justify-between gap-4">
+        <div className="grid gap-1">
+          <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
+          {description ? (
+            <p className="text-sm text-muted-foreground">{description}</p>
+          ) : null}
+        </div>
+
+        {!hideSave ? (
+          <Button
+            type="button"
+            onClick={() => void save()}
+            disabled={saving || loading}
+          >
+            {saving ? "Saving…" : "Save"}
+          </Button>
         ) : null}
       </header>
-
-      {/* Admin token removed for simplicity */}
 
       {successMessage && !error ? (
         <div className="rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">

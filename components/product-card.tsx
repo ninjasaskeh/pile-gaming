@@ -37,22 +37,27 @@ export function ProductCard({ item }: { item: ProductOverviewItem }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Card className="overflow-hidden border border-border/50 rounded-xl shadow-sm cursor-pointer">
+        <Card className="group overflow-hidden border border-border/50 rounded-xl shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40">
           <div className="relative w-full aspect-[4/3] overflow-hidden">
             <Image
               src={src}
               alt={title}
               fill
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover select-none"
+              className="object-cover select-none transition-transform duration-500 group-hover:scale-105"
               loading="lazy"
               fetchPriority="low"
             />
           </div>
           <div className="p-4 bg-white dark:bg-neutral-900">
             <div className="flex items-center justify-between gap-3">
-              <CardTitle className="text-base leading-tight">{title}</CardTitle>
-              <Badge variant="outline" className="text-xs">
+              <CardTitle className="text-base leading-tight transition-colors group-hover:text-primary">
+                {title}
+              </CardTitle>
+              <Badge
+                variant="outline"
+                className="text-xs transition-colors group-hover:border-primary/60 group-hover:text-primary"
+              >
                 {category}
               </Badge>
             </div>

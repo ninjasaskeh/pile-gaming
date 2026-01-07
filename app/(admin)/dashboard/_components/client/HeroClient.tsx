@@ -1,26 +1,30 @@
 "use client";
 
-import { HeroForm } from "../HeroForm";
 import { SectionPageShell } from "../SectionPageShell";
 import { useSectionContent } from "../useSectionContent";
+import { CmsDataTable } from "../CmsDataTable";
+import { rowsToSection, sectionToRows } from "../cmsTableAdapters";
 
 export default function HeroClient({ initial }: { initial: any }) {
   const manager = useSectionContent("hero", {
     initial,
     skipInitialFetch: true,
   });
+
   return (
     <SectionPageShell
       title="Hero"
-      description="Edit the main hero headline, supporting copy, and CTAs."
+      description="Edit the main hero headline, supporting copy, and CTAs. (Table Editor)"
       manager={manager}
     >
-      <HeroForm
-        value={manager.value}
-        onChange={manager.setValue}
-        onSave={() => {
-          void manager.save();
-        }}
+      <CmsDataTable
+        title="Hero"
+        description="Edit fields in a table view."
+        rows={sectionToRows("hero", manager.value)}
+        onChange={(nextRows) =>
+          manager.setValue(rowsToSection("hero", nextRows, manager.value))
+        }
+        onSave={() => manager.save()}
         saving={manager.saving}
       />
     </SectionPageShell>

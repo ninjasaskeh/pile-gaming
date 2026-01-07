@@ -2,16 +2,15 @@
 import { Badge } from "@/components/ui/badge";
 import WorldMap from "@/components/ui/world-map";
 import { SectionHeader } from "@/components/layout/SectionHeader";
-import { MARKETS_CONTENT } from "@/constants";
 import type { MarketsContent } from "@/lib/content";
 import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 
 export const MarketsSection = ({ data }: { data?: MarketsContent | null }) => {
   useSectionRevealPreset("markets", "fadeUp");
   const content = data || {};
-  const header = content.header || MARKETS_CONTENT.header;
-  const origin = content.origin || MARKETS_CONTENT.origin;
-  const markets = content.markets || MARKETS_CONTENT.markets;
+  const header = content.header || undefined;
+  const origin = content.origin || undefined;
+  const markets = content.markets || [];
   const dots = (markets || [])
     .filter(
       (m) =>
@@ -29,7 +28,7 @@ export const MarketsSection = ({ data }: { data?: MarketsContent | null }) => {
 
   return (
     <section id="markets" className="container py-24 sm:py-32">
-      <SectionHeader data={header} fallback={MARKETS_CONTENT.header} />
+      <SectionHeader data={header} />
 
       <div className="rounded-xl overflow-hidden bg-muted/30 dark:bg-card/50 gsap-reveal">
         <WorldMap dots={dots} />

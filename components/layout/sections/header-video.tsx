@@ -1,5 +1,4 @@
 "use client";
-import { HERO_FALLBACK_CONTENT } from "@/constants";
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 
@@ -16,7 +15,7 @@ export function HeaderVideoSection() {
     );
   }, []);
 
-  const poster = HERO_FALLBACK_CONTENT.imageUrl || "/pile-logo.png";
+  const poster = "/pile-logo.png";
   return (
     <section className="relative w-full h-[55vh] min-h-[420px] overflow-hidden hidden md:block">
       <video

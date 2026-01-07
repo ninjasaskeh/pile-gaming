@@ -72,3 +72,166 @@ model ContentSection {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
+
+// Typed models per section (no JSON payloads)
+
+model Hero {
+  id               String   @id @default(cuid())
+  title            String
+  subtitle         String
+  description      String?
+  primaryCtaText   String?
+  primaryCtaHref   String?
+  secondaryCtaText String?
+  secondaryCtaHref String?
+  imageUrl         String?
+  updatedAt        DateTime @updatedAt
+  createdAt        DateTime @default(now())
+}
+
+// Generic typed header stored per section key (e.g., productsHeader, productOverviewHeader, marketsHeader, customersHeader, faqHeader)
+model SectionHeader {
+  id        String   @id @default(cuid())
+  section   String   @unique
+  kicker    String?
+  title     String?
+  subtitle  String?
+  imageUrl  String?
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+// Capabilities and Benefits items
+model CapabilityItem {
+  id          String   @id @default(cuid())
+  section     String   // use "capabilities"
+  icon        String?
+  title       String?
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model BenefitItem {
+  id          String   @id @default(cuid())
+  section     String   // use "benefits"
+  icon        String?
+  title       String?
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+// Products lines (e.g., Hi Pile, Boa, Polyester)
+model ProductLineItem {
+  id          String   @id @default(cuid())
+  section     String   // use "products"
+  title       String?
+  description String?
+  pro         Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+// Product overview catalog items
+model ProductOverviewItem {
+  id           String   @id @default(cuid())
+  src          String?
+  title        String?
+  code         String?
+  category     String?
+  description  String?
+  pileHeight   String?
+  weight       String?
+  composition  String?
+  finish       String?
+  color        String?
+  createdAt    DateTime @default(now())
+  tags         ProductOverviewTag[]
+}
+
+model ProductOverviewTag {
+  id      String  @id @default(cuid())
+  name    String
+  itemId  String
+  item    ProductOverviewItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+// Markets
+model MarketPoint {
+  id       String   @id @default(cuid())
+  section  String   // use "markets"
+  lat      Float?
+  lng      Float?
+  label    String?
+  isOrigin Boolean  @default(false)
+}
+
+// Customers
+model CustomerLogo {
+  id      String   @id @default(cuid())
+  section String   // use "customers"
+  src     String?
+  alt     String?
+  createdAt DateTime @default(now())
+}
+
+// Contact
+model Contact {
+  id            String   @id @default(cuid())
+  kicker        String?
+  title         String?
+  description   String?
+  address       String?
+  phone         String?
+  phoneHref     String?
+  email         String?
+  emailHref     String?
+  businessDays  String?
+  businessHours String?
+  // simplistic store of subject options as separate table for normalization if needed; for now comma string
+  subjectOptions String?
+  // form placeholders
+  firstNamePh    String?
+  lastNamePh     String?
+  emailPh        String?
+  messagePh      String?
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+}
+
+// FAQ
+model FaqItem {
+  id       String   @id @default(cuid())
+  section  String   // use "faq"
+  value    String?
+  question String?
+  answer   String?
+  createdAt DateTime @default(now())
+}
+
+// Footer
+model Footer {
+  id         String   @id @default(cuid())
+  brandName  String?
+  address    String?
+  email      String?
+  phone      String?
+  emailHref  String?
+  phoneHref  String?
+  mapEmbedUrl String?
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+}
+
+// Site metadata
+model SiteMetadata {
+  id           String   @id @default(cuid())
+  title        String?
+  description  String?
+  url          String?
+  ogImageSrc   String?
+  ogImageWidth Int?
+  ogImageHeight Int?
+  ogImageAlt   String?
+  twitterCard  String?
+  updatedAt    DateTime @updatedAt
+  createdAt    DateTime @default(now())
+}

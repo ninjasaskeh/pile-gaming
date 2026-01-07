@@ -6,16 +6,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { FAQ_CONTENT } from "@/constants";
 import type { FaqContent } from "@/lib/content";
 import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 
 export const FAQSection = ({ data }: { data?: FaqContent | null }) => {
   useSectionRevealPreset("faq", "fadeUp");
   const content = data || {};
-  const kicker = content.kicker || FAQ_CONTENT.kicker;
-  const title = content.title || FAQ_CONTENT.title;
-  const items = content.items || FAQ_CONTENT.items;
+  const kicker = content.kicker || "";
+  const title = content.title || "";
+  const items = content.items || [];
 
   return (
     <section id="faq" className="container md:w-[700px] py-24 sm:py-32">

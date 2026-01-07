@@ -6,7 +6,6 @@ import type {
   ProductOverviewContent,
   ProductOverviewItem,
 } from "@/lib/content";
-import { PRODUCT_OVERVIEW_CONTENT } from "@/constants";
 import { getSection } from "@/app/(admin)/dashboard/_actions/content";
 
 export const revalidate = 60;
@@ -15,19 +14,26 @@ export default async function ProductsPage() {
   const content = (await getSection(
     "productOverview"
   )) as ProductOverviewContent;
-  const header = content?.header ?? PRODUCT_OVERVIEW_CONTENT.header;
-  const items = content?.items ?? PRODUCT_OVERVIEW_CONTENT.items;
+  const header = content?.header ?? undefined;
+  const items = content?.items ?? [];
 
   return (
-    <div className="container pt-8 sm:pt-12 pb-24 sm:pb-32">
-      <div className="mb-4 sm:mb-6">
-        <Button asChild variant="ghost">
-          <Link href="/">Back</Link>
-        </Button>
+    <section className="relative py-10 sm:py-16 lg:py-20">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary/10 via-background to-transparent" />
+      <div className="container relative pb-24 sm:pb-32">
+        <div className="mb-4 sm:mb-6 flex items-center justify-between gap-3">
+          <Button asChild variant="ghost" size="sm">
+            <Link href="/">← Back to homepage</Link>
+          </Button>
+          <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+            Showing <span className="font-semibold">{items.length}</span>{" "}
+            products
+          </p>
+        </div>
+        <SectionHeader data={header} />
+        <ProductsGrid items={items ?? []} />
       </div>
-      <SectionHeader data={header} fallback={PRODUCT_OVERVIEW_CONTENT.header} />
-      <ProductsGrid items={items ?? []} />
-    </div>
+    </section>
   );
 }
 

@@ -4,7 +4,6 @@ import { useSectionRevealPreset } from "@/lib/useGsapReveal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Icon } from "@/components/ui/icon";
 import { icons } from "lucide-react";
-import { BENEFITS_CONTENT } from "@/constants";
 import type { BenefitsContent } from "@/lib/content";
 
 export const BenefitsSection = ({
@@ -14,10 +13,10 @@ export const BenefitsSection = ({
 }) => {
   useSectionRevealPreset("benefits", "fadeUp");
   const content = data || {};
-  const kicker = content.kicker ?? BENEFITS_CONTENT.kicker;
-  const title = content.title ?? BENEFITS_CONTENT.title;
-  const description = content.description ?? BENEFITS_CONTENT.description;
-  const items = content.items ?? BENEFITS_CONTENT.items;
+  const kicker = content.kicker ?? "";
+  const title = content.title ?? "";
+  const description = content.description ?? "";
+  const items = content.items ?? [];
 
   return (
     <section id="benefits" className="container py-24 sm:py-32">

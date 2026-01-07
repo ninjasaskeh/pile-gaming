@@ -11,7 +11,7 @@ export type SectionContentManager<K extends keyof SiteContent> = {
   saving: boolean;
   error: string | null;
   successMessage: string | null;
-  save: () => Promise<void>;
+  save: (nextValue?: SiteContent[K]) => Promise<void>;
   refresh: () => Promise<void>;
 };
 
@@ -59,20 +59,32 @@ export function useSectionContent<K extends keyof SiteContent>(
     };
   }, []);
 
-  const save = React.useCallback(async () => {
-    setSaving(true);
-    try {
-      await setSection(section, (value ?? ({} as SiteContent[K])) as any);
-      setError(null);
-      setSuccessMessage("Changes saved.");
-      scheduleSuccessClear();
-    } catch (err) {
-      const reason = err as Error;
-      setError(reason.message || "Failed to save section.");
-    } finally {
-      setSaving(false);
-    }
-  }, [section, scheduleSuccessClear, value]);
+  const save = React.useCallback(
+    async (nextValue?: SiteContent[K]) => {
+      const payload = (nextValue ??
+        value ??
+        ({} as SiteContent[K])) as SiteContent[K];
+      console.log("[useSectionContent.save] start", {
+        section,
+        payload,
+      });
+      setSaving(true);
+      try {
+        await setSection(section, payload as any);
+        setError(null);
+        setSuccessMessage("Changes saved.");
+        scheduleSuccessClear();
+        console.log("[useSectionContent.save] success", { section });
+      } catch (err) {
+        const reason = err as Error;
+        setError(reason.message || "Failed to save section.");
+        console.error("[useSectionContent.save] error", { section, err });
+      } finally {
+        setSaving(false);
+      }
+    },
+    [section, scheduleSuccessClear, value]
+  );
 
   return {
     value,
